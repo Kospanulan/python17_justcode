@@ -11,6 +11,6 @@ print(pow_of_n(5, 2))
 # print(module3.sum_of_n(12, 5))
 # print(module3.pow_of_n(5, 2))
 
-from topic8_2.module3 import sum_of_n
+from module_python.topic8_2.module3 import sum_of_n
 print(sum_of_n(12, 5))
 

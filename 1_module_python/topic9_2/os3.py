@@ -6,7 +6,7 @@ import os
 # os.rmdir('file_dir/test_dir')
 # os.rmdir('file_dir')
 
-main_dir = '/home/ulan/edu/justcode/python17_justcode/topic9_2/data'
+main_dir = '/1_module_python/topic9_2/data'
 filenames = os.listdir(main_dir)
 
 for filename in filenames:
