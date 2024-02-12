@@ -5,45 +5,37 @@ API_TOKEN = "6971792089:AAHoSiM360WGQUkYW_bXbM25KBJITZuLEb4"
 
 bot = telebot.TeleBot(token=API_TOKEN)
 
-REPLY_KEYBOARD_OPTIONS = ["Алматы", "Астана", "Актобе", "Шымкент"]
+bad_words = []
 
 
-@bot.message_handler(commands=["start"])
-def handler_with_keyboard(
-        message: Message
-):
+def contains_greeting(msg):
+    if "привет" in msg.text.lower() and 'бот' in msg.text.lower():
+        return True
+    return False
 
-    markup = InlineKeyboardMarkup(row_width=2)
 
-    btn1 = InlineKeyboardButton(text="A) Алматы", callback_data="a")
-    btn2 = InlineKeyboardButton(text="B) Астана", callback_data="b")
-    btn3 = InlineKeyboardButton(text="C) Астана", url="https://github.com/Kospanulan/python17_justcode")
-    btn4 = InlineKeyboardButton(text="D) Астана", callback_data="b")
+def contains_bye(msg):
+    if "пока" in msg.text.lower() and 'бот' in msg.text.lower():
+        return True
+    return False
 
-    markup.add(btn1, btn2, btn3, btn4)
+
+@bot.message_handler(func=contains_greeting)
+def message_handler(message: Message):
 
     bot.send_message(
         chat_id=message.chat.id,
-        text="Выберите город:",
-        reply_markup=markup
+        text=f"Привет {message.from_user.username}"
     )
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def callback_handler(call: CallbackQuery):
+@bot.message_handler(func=contains_bye)
+def message_handler(message: Message):
 
-    bot.answer_callback_query(callback_query_id=call.id, text="Принято!", show_alert=True)
-
-    if call.data == "a":
-        bot.send_message(
-            chat_id=call.message.chat.id,
-            text=f"Оо, ты с Алматы)"
-        )
-    else:
-        bot.send_message(
-            chat_id=call.message.chat.id,
-            text=f"Переезжай в Алматы!"
-        )
+    bot.send_message(
+        chat_id=message.chat.id,
+        text=f"Пока {message.from_user.username}"
+    )
 
 
 bot.polling()
