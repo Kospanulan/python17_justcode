@@ -20,7 +20,8 @@ print(type(soup))
 
 print("\n================================\n")
 
-quotes = soup.find_all('span', class_='text')
+# quotes = soup.find_all('span', class_='text')
+quotes = soup.find_all('span', attrs={'class': 'text'})
 
 for quote in quotes:
     print(quote.text)

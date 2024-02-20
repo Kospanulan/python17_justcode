@@ -3,7 +3,13 @@ from bs4 import BeautifulSoup
 
 url = 'https://quotes.toscrape.com/'
 
-response = requests.get(url)
+headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+}
+
+response = requests.get(url, headers=headers)
+print(response.headers)
+
 
 soup = BeautifulSoup(
     markup=response.text,
