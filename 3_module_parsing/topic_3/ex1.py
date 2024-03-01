@@ -4,6 +4,7 @@ import json
 url = 'https://reqres.in/api/users/'
 
 response = requests.get(url)
+
 json_data = response.text
 
 print(type(json_data))

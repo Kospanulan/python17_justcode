@@ -1,7 +1,8 @@
 import requests
 import json
 
-url = 'https://reqres.in/api/login'
+base_url = 'https://reqres.in'
+url = f'{base_url}/api/login'
 
 payload = {
     "email": "eve.holt@reqres.in",
