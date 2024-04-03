@@ -18,20 +18,6 @@ def create_post(
     return new_post
 
 
-def get_user(
-        session: Session,
-        user_id: int
-):
-    user = (
-        session
-        .query(User)
-        .filter(User.id == user_id)
-        .one()
-    )
-
-    return user
-
-
 def get_post(
         session: Session,
         post_id: int
@@ -53,7 +39,7 @@ def get_posts_with_author_name(
 
     result = (
         session
-        .query(Post, t1.c.name)
+        .query(Post, t1.c.username)
         .join(
             t1,
             t1.c.id == Post.author_id
@@ -62,9 +48,25 @@ def get_posts_with_author_name(
     )
 
     posts = []
-    for post, user_name in result:
-        post.author_name = user_name
+    for post, username in result:
+        post.author_username = username
         posts.append(post)
 
     return posts
+
+
+def delete_post(
+        session: Session,
+        post_id: int
+):
+    post = (
+        session
+        .query(Post)
+        .filter(Post.id == post_id)
+        .one()
+    )
+
+    session.delete(post)
+
+    return post
 

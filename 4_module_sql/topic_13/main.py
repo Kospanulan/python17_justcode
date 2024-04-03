@@ -1,32 +1,44 @@
-from crud import create_post, get_user, get_post, get_posts_with_author_name
+from crud.posts import create_post, get_post, get_posts_with_author_name
+from crud.users import get_user, create_user
+
 from database import Session
 
 
-with Session() as session:
 
-    posts = get_posts_with_author_name(
-        session=session
-    )
+if __name__ == '__main__':
 
-    for post in posts:
-        print(post, f"Author name: {post.author_name}")
+    with Session() as session:
 
+        posts = get_posts_with_author_name(
+            session=session
+        )
 
-    # new_post = create_post(
-    #     session=session,
-    #     content="Seventh post for test 1",
-    #     author_id=1
-    # )
-    # session.commit()
+        for post in posts:
+            print(post, f"Author name: {post.author_username}")
 
-    # user = get_user(session=session, user_id=6)
-    # session.delete(user)
-    # session.commit()
+        # Creating a new post
+        # new_post = create_post(
+        #     session=session,
+        #     content="Ninth post for test 3",
+        #     author_id=3
+        # )
+        # session.commit()
 
-    # post = get_post(session=session, post_id=6)
-    # print("==================================================")
-    # print(post)
-    # print("==================================================")
-    # print(post.author)
+        # Creating a new user
+        # new_post = create_user(
+        #     session=session,
+        #     username="sasha"
+        # )
+        # session.commit()
+
+        # user = get_user(session=session, user_id=3)
+        # session.delete(user)
+        # session.commit()
+
+        # post = get_post(session=session, post_id=6)
+        # print("==================================================")
+        # print(post)
+        # print("==================================================")
+        # print(post.author)
 
 
