@@ -1,0 +1,32 @@
+* {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: lighter;
+  text-align: center;
+  /* text-decoration: line-through; */
+  /* line-height: 100px; */
+}
+
+body {
+  background-color: antiquewhite;
+}
+
+p {
+  color: aqua;
+  border: 3px solid black;
+  border-radius: 5px;
+  /* background-color: chocolate; */
+}
+
+.greeting {
+  color: rgb(0, 0, 0);
+  border: 3px solid black;
+  border-radius: 5px;
+  /* background-color: cadetblue; */
+}
+
+#hi {
+  color: #ffffff;
+  font-size: 20px;
+  padding: 30px 20px 10px 5px;
+  margin: 50px;
+}
