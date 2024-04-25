@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Topic 7. Calculator.</title>
+  </head>
+  <body>
+    <div class="main">
+      <h1>Calculator</h1>
+
+      <!-- input numbers -->
+      <div class="inputs">
+        <label for="input1">Number 1:</label>
+        <input type="number" id="input1" />
+        <label for="input2">Number 2:</label>
+        <input type="number" id="input2" />
+      </div>
+
+      <!-- Operator buttons -->
+      <div class="buttons">
+        <button id="btnPlus" onclick="clickHandler(event)">+</button>
+        <button id="btnMinus" onclick="clickHandler(event)">-</button>
+        <button id="btnMul" onclick="clickHandler(event)">*</button>
+        <button id="btnDiv" onclick="clickHandler(event)">/</button>
+      </div>
+
+      <div class="result-container">
+        <h3>Result</h3>
+        <p id="result">0</p>
+      </div>
+    </div>
+  </body>
+</html>
