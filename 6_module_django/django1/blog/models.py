@@ -1,13 +1,6 @@
 from django.db import models
 
-"""
-Posts
-Categories
-
-post_categories: id, post_id, category_id
-
-
-"""
+from django.contrib.auth import get_user_model
 
 
 class Category(models.Model):
@@ -23,10 +16,19 @@ class Post(models.Model):
     title = models.CharField(max_length=100)  # VARCHAR(100) NOT NULL
     content = models.TextField()  # TEXT NOT NULL UNIQUE
 
-    categories_custom = models.ManyToManyField(Category, through="PostCategoriesCustom", related_name="posts")
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)  # User.posts.all()
+
+    categories = models.ManyToManyField(Category)  # Category.posts.all()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "posts"
+        ordering = ("-created_at",)
+        unique_together = ("title", "content", "author")
+        indexes = [models.Index(fields=("title", "content", "created_at"))]
+        default_related_name = "posts"
 
     @property
     def demo_text(self):
@@ -36,16 +38,12 @@ class Post(models.Model):
         return f"{self.title} ({self.pk})"  # pk = primary key
 
 
-class PostCategoriesCustom(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Comment(models.Model):
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")  # related_name: comment_set
     text = models.CharField(max_length=200)  # VARCHAR NOT NULL
+
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
