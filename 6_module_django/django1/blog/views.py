@@ -2,31 +2,98 @@ from django import views
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.template import loader
+from django.views import generic
+from django.views.generic import ListView
 
 from blog.forms import PostModelForm
 from blog.models import Post, Comment
 
 
-def index(request, *args, **kwargs):
-    posts = Post.objects.all()
+# class OurListView(views.View):
+#     model = None
+#     context_object_name = None
+#     template_name = None
+#
+#     def get_queryset(self):
+#         return self.model.objects.all()
+#
+#     def get_context_data(self):
+#         objects = self.get_queryset()
+#
+#         return {
+#             self.context_object_name: objects,
+#         }
+#
+#     def get(self, request, *args, **kwargs):
+#
+#         context = self.get_context_data()
+#
+#         return render(
+#             request=request,
+#             template_name=self.template_name,
+#             context=context
+#         )
 
-    context = {
-        "my_posts": posts,
-        "name": "Arman",
-    }
 
-    return render(
-        request=request,
-        template_name='blog/index.html',
-        context=context
-    )
+class PostListView(generic.ListView):
+    model = Post
+    template_name = 'blog/index.html'
+    context_object_name = 'my_posts'
+
+    # def get_queryset(self):
+    #     return Post.objects.filter(pk=1)
+    #
+    # def get_context_data(self):
+    #     context = super().get_context_data()
+    #     context["user"] = "Ulan"
+    #     return context
 
 
-def create_post(request, *args, **kwargs):
+# class CommentListView(OurListView):
+#     model = Comment
+#     template_name = 'blog/index.html'
+#     context_object_name = 'my_posts'
 
-    print(f"request method: {request.method}")
 
-    if request.method == "GET":
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # def get_queryset(self):
+    #     return Post.objects.filter(pk=4)
+    #
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data()
+    #     context['user'] = "Ashat"
+    #     return context
+
+
+
+
+
+
+
+
+
+
+class PostCreateView(views.View):
+
+    def get(self, request, *args, **kwargs):
         context = {
             'my_form': PostModelForm()
         }
@@ -35,49 +102,14 @@ def create_post(request, *args, **kwargs):
             template_name='blog/create_post.html',
             context=context
         )
-    elif request.method == "POST":
+
+    def post(self, request, *args, **kwargs):
         form = PostModelForm(request.POST)
 
         if form.is_valid():
-            # title = form.cleaned_data["title"]
-
-            # new_post = form.save(commit=False)
-            # new_post.author_id = 1
-            # new_post.save()
-
             new_post = form.save()
 
             return redirect("post-detail", new_post.pk)
-
-    return HttpResponse(f"<h1>Not Allowed!</h1>")
-
-
-def create_post_old(request, *args, **kwargs):
-
-    if request.method == "GET":
-        return render(
-            request=request,
-            template_name='blog/create_post.html',
-        )
-    elif request.method == "POST":
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        author_id = 1
-
-        new_post = Post(
-            title=title,
-            content=content,
-            author_id=author_id
-        )
-
-        new_post.save()
-        return redirect("post-detail", new_post.pk)
-
-        # return HttpResponse(f"<h1>Post Created!</h1>"
-        #                     f"<h2>{new_post.pk}. {new_post.title}</h2>"
-        #                     f"<p>{new_post.content}</p>")
-
-    return HttpResponse(f"<h1>Not Allowed!</h1>")
 
 
 def detail(request, *args, **kwargs):
