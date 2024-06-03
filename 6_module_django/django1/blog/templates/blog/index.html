@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posts</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}
+Posts
+{% endblock %}
+
+{% block content %}
     <div>
         <h1>Все посты, {{ user }}</h1>
     </div>
@@ -17,5 +17,7 @@
         </div>
         {% endfor %}
     </div>
-</body>
-</html>
+{% endblock %}
+
+
+

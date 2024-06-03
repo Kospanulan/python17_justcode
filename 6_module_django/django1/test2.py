@@ -27,6 +27,10 @@ cat.say_something()
 
 
 
+print(Cat)
+print(Cat())
+print(cat)
+
 
 
 
