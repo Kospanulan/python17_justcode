@@ -5,35 +5,27 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from blog.models import Post
+from blog.serializers import PostSerializer
 
 
-@api_view(["GET", "POST"])
-def index(request, *args, **kwargs):
-    if request.method == "GET":
+class PostAPIView(views.APIView):
+
+    def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
 
-        result = [model_to_dict(post) for post in posts]
+        result = PostSerializer(data=posts, many=True)
+        result.is_valid()
+        return Response(result.data)
 
-        return Response(result)
-
-    elif request.method == "POST":
+    def post(self, request, *args, **kwargs):
         data = request.data
 
-        new_post = Post(
-            title=data["title"],
-            content=data["content"],
-            author_id=1,
-        )
+        serializer = PostSerializer(data=data)
 
-        new_post.save()
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return Response(data)
-
-# for branch 8-drf2
-# class PostAPIView(views.APIView):
-#
-#     def post(self, request, *args, **kwargs):
-#         return Response({"detail": "OK!"})
+        return Response(serializer.data)
 
 
 def detail(request, *args, **kwargs):
