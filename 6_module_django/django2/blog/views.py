@@ -1,11 +1,19 @@
 from django.forms import model_to_dict
 from django.http import JsonResponse
-from rest_framework import views
+from rest_framework import views, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from django.views import View, generic
+
+
 from blog.models import Post
 from blog.serializers import PostSerializer
+
+
+class PostListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
 
 class PostAPIView(views.APIView):
@@ -28,11 +36,18 @@ class PostAPIView(views.APIView):
         return Response(serializer.data)
 
 
-def detail(request, *args, **kwargs):
-    post_id = kwargs.get('post_id')
-    post = Post.objects.get(id=post_id)
+# class PostRetrieveAPIView(generics.RetrieveAPIView):
+#     queryset = Post.objects.all()
+#     serializer_class = PostSerializer
 
-    json_post = model_to_dict(post, fields=["title", "content", "id"])
 
-    return JsonResponse(json_post)
+class PostRetrieveAPIView(generics.RetrieveAPIView):
+
+    def get(self, request, *args, **kwargs):
+        post_id = kwargs.get('pk')
+        post = Post.objects.get(id=post_id)
+
+        result = PostSerializer(post, many=False)
+
+        return Response(result.data)
 
