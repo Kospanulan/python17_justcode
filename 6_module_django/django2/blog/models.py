@@ -20,6 +20,8 @@ class Post(models.Model):
 
     categories = models.ManyToManyField(Category)  # Category.posts.all()
 
+    image = models.ImageField(upload_to='images/', null=True, blank=True, default=None)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
