@@ -23,6 +23,7 @@ from config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include('blog.urls')),
+    path('auth/', include('authorization.urls')),
 ]
 
 if settings.DEBUG:

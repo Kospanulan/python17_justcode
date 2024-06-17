@@ -1,6 +1,6 @@
 from django.forms import model_to_dict
 from django.http import JsonResponse
-from rest_framework import views, generics, mixins
+from rest_framework import views, generics, mixins, permissions, authentication
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -15,9 +15,14 @@ class PostListCreateAPIView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def perform_create(self, serializer):
         # serializer.validated_data['author_id'] = 1
-        serializer.save(author_id=1)
+        print(self.request.user)
+        author_id = self.request.user.id
+        serializer.save(author_id=author_id)
 
 
 class PostRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
