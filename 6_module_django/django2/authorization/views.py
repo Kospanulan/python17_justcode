@@ -23,7 +23,7 @@ class LoginAPIView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = UserLoginSerializer(data=request.data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
 
         user = authenticate(
             request,
@@ -43,3 +43,7 @@ class LogoutAPIView(views.APIView):
 
     def post(self, request, *args, **kwrgs):
         logout(request)
+        return Response(
+            {'detail': 'Logout successful'},
+            status=status.HTTP_200_OK
+        )

@@ -16,13 +16,17 @@ class PostListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = PostSerializer
 
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         # serializer.validated_data['author_id'] = 1
         print(self.request.user)
         author_id = self.request.user.id
         serializer.save(author_id=author_id)
+
+    def get_queryset(self):
+        queryset = Post.objects.all().filter(author_id=self.request.user.id)
+        return queryset
 
 
 class PostRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
