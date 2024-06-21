@@ -1,4 +1,5 @@
 from rest_framework import generics, permissions, authentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from blog.models import Post
 from blog.serializers import PostSerializer
@@ -8,11 +9,10 @@ class PostListCreateAPIView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        # serializer.validated_data['author_id'] = 1
         print(self.request.user)
         author_id = self.request.user.id
         serializer.save(author_id=author_id)
